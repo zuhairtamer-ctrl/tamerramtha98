@@ -17,3 +17,43 @@
 .book-card .media-preview{height:230px;background:#142b29}.book-card .media-preview img{object-fit:cover}.media-description{color:var(--muted);font-size:12px;line-height:1.6;margin:6px 0 12px}
 
 .slide-viewer{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:14px}.slide-viewer .preview-image{max-width:100%;max-height:calc(100% - 54px);object-fit:contain;user-select:none}.slide-controls{display:flex;align-items:center;gap:20px;color:#d9ff55;font:11px var(--mono)}.slide-controls button{border:1px solid #79b59c;background:#142b29;color:#d9ff55;padding:8px 14px;cursor:pointer}.slide-controls button:disabled{opacity:.35;cursor:not-allowed}.slide-controls span{min-width:55px;text-align:center}
+
+/* Complete dark-mode control coverage */
+body.dark .sound-toggle,
+body.dark .lang,
+body.dark .theme-toggle{background:#10231f;color:var(--ink);border-color:#36594d}
+body.dark .sound-toggle:hover,
+body.dark .lang:hover,
+body.dark .theme-toggle:hover{background:#173e32;color:#d9ff55;border-color:#79b59c}
+body.dark .work-tab em{background:#173e32;color:var(--ink)}
+body.dark .work-tab.active em{background:#0b1715;color:#d9ff55}
+body.dark .preview-trigger,
+body.dark .cert-preview,
+body.dark .text-link.preview-trigger{color:var(--ink);border-color:#5f9e82}
+body.dark .preview-trigger:hover,
+body.dark .cert-preview:hover,
+body.dark .text-link.preview-trigger:hover{color:#d9ff55;border-color:#d9ff55}
+body.dark .cert-preview small{color:#9ab6aa}
+body.dark .preview-close{color:var(--ink)}
+body.dark .btn.ghost{background:#10231f;color:var(--ink);border-color:#36594d}
+body.dark .btn.ghost:hover{background:#173e32;border-color:#79b59c}
+body.dark .contact-form button,
+body.dark button{color:inherit}
+
+body.dark .credentials{background:#0d211d}
+body.dark .contact-section{background:#123b31}
+body.dark .contact-copy>p:not(.eyebrow){color:#a7d2c1}
+body.dark .media-preview{background:#17352c}
+body.dark .neural{background:#143332}
+body.dark .data-viz{background:#172a43}
+body.dark .float-chip{background:#10231f;color:var(--muted);border-color:#2b4c41}
+body.dark .hero-meta b,
+body.dark .timeline-item h3,
+body.dark .card-body h3,
+body.dark .contact-details a{color:var(--ink)}
+body.dark .contact-details span,
+body.dark .contact-form small{color:#9ab6aa}
+body.dark .contact-form input,
+body.dark .contact-form textarea{color:var(--ink);border-color:#36594d}
+body.dark .contact-form input::placeholder,
+body.dark .contact-form textarea::placeholder{color:#78948a}
