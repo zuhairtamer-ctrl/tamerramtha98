@@ -35,7 +35,14 @@ groups.forEach((g,i)=>{g.hidden=i!==0});workTabs.forEach(tab=>tab.addEventListen
     if (type === 'image') { el = document.createElement('img'); el.src = url; el.alt = title; el.draggable = false; }
     else if (type === 'video') { el = document.createElement('video'); el.src = url; el.controls = true; el.controlsList = 'nodownload noplaybackrate'; el.disablePictureInPicture = true; }
     else if (type === 'audio') { el = document.createElement('audio'); el.src = url; el.controls = true; el.controlsList = 'nodownload noplaybackrate'; }
-    else { el = document.createElement('iframe'); el.src = url; el.title = title; el.setAttribute('sandbox', 'allow-same-origin allow-scripts'); }
+    else {
+      el = document.createElement('iframe');
+      el.src = url;
+      el.title = title;
+      el.setAttribute('allow', 'fullscreen');
+      // Do not sandbox PDF viewers: browser and Drive PDF plugins need their own viewer context.
+      if (type !== 'pdf' && !url.includes('drive.google.com')) el.setAttribute('sandbox', 'allow-same-origin allow-scripts');
+    }
     el.className = `preview-${type}`;
     el.addEventListener('contextmenu', e => e.preventDefault());
     stage.appendChild(el); caption.textContent = title;
@@ -78,7 +85,14 @@ groups.forEach((g,i)=>{g.hidden=i!==0});workTabs.forEach(tab=>tab.addEventListen
     if (type === 'image') { el = document.createElement('img'); el.src = url; el.alt = title; el.draggable = false; }
     else if (type === 'video') { el = document.createElement('video'); el.src = url; el.controls = true; el.controlsList = 'nodownload noplaybackrate'; el.disablePictureInPicture = true; }
     else if (type === 'audio') { el = document.createElement('audio'); el.src = url; el.controls = true; el.controlsList = 'nodownload noplaybackrate'; }
-    else { el = document.createElement('iframe'); el.src = url; el.title = title; el.setAttribute('sandbox', 'allow-same-origin allow-scripts'); }
+    else {
+      el = document.createElement('iframe');
+      el.src = url;
+      el.title = title;
+      el.setAttribute('allow', 'fullscreen');
+      // Do not sandbox PDF viewers: browser and Drive PDF plugins need their own viewer context.
+      if (type !== 'pdf' && !url.includes('drive.google.com')) el.setAttribute('sandbox', 'allow-same-origin allow-scripts');
+    }
     el.className = `preview-${type}`;
     el.addEventListener('contextmenu', e => e.preventDefault());
     stage.appendChild(el); caption.textContent = title;
