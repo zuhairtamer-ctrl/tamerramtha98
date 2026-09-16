@@ -111,3 +111,49 @@ groups.forEach((g,i)=>{g.hidden=i!==0});workTabs.forEach(tab=>tab.addEventListen
   document.addEventListener('dragstart', e => { if (e.target.matches('img, video, audio, a')) e.preventDefault(); });
   document.querySelectorAll('video, audio').forEach(el => { el.controlsList = 'nodownload noplaybackrate'; el.addEventListener('contextmenu', e => e.preventDefault()); });
 })();
+
+// Fast local slide viewer for presentations: avoids browser PDF/PPT plugins.
+(function initSlideViewer() {
+  const modal = document.getElementById('previewModal');
+  const stage = document.getElementById('previewStage');
+  const caption = document.getElementById('previewCaption');
+  if (!modal || !stage) return;
+  document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('.preview-trigger[data-slides]');
+    if (!trigger) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const slides = trigger.dataset.slides.split(',');
+    let current = 0;
+    stage.replaceChildren();
+    const shell = document.createElement('div');
+    shell.className = 'slide-viewer';
+    const image = document.createElement('img');
+    image.className = 'preview-image';
+    image.alt = trigger.dataset.title || 'Presentation slide';
+    image.draggable = false;
+    const controls = document.createElement('div');
+    controls.className = 'slide-controls';
+    const previous = document.createElement('button');
+    const next = document.createElement('button');
+    const counter = document.createElement('span');
+    previous.type = next.type = 'button';
+    previous.textContent = 'السابق';
+    next.textContent = 'التالي';
+    const render = () => {
+      image.src = slides[current];
+      counter.textContent = `${current + 1} / ${slides.length}`;
+      previous.disabled = current === 0;
+      next.disabled = current === slides.length - 1;
+    };
+    previous.addEventListener('click', () => { if (current) { current -= 1; render(); } });
+    next.addEventListener('click', () => { if (current < slides.length - 1) { current += 1; render(); } });
+    controls.append(previous, counter, next);
+    shell.append(image, controls);
+    stage.appendChild(shell);
+    caption.textContent = trigger.dataset.title || 'Presentation';
+    modal.hidden = false;
+    document.body.classList.add('modal-open');
+    render();
+  }, true);
+})();
