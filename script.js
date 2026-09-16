@@ -5,7 +5,83 @@ function ping(freq=420){if(!audioOn)return;if(!audioCtx)audioCtx=new AudioContex
 document.querySelectorAll('a,button').forEach((el,i)=>el.addEventListener('mouseenter',()=>ping(300+i*18)));
 const sound=document.getElementById('soundToggle');sound.addEventListener('click',()=>{audioOn=!audioOn;sound.innerHTML=audioOn?'◉ <span>صوت: ON</span>':'◉ <span>صوت</span>';if(audioOn)ping(620)});
 const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-document.getElementById('langToggle').addEventListener('click',e=>{const on=document.documentElement.lang==='ar';document.documentElement.lang=on?'en':'ar';document.documentElement.dir=on?'ltr':'rtl';e.target.textContent=on?'AR':'EN';document.body.classList.toggle('english',on);alert(on?'English interface is available for navigation.':'تمت استعادة الواجهة العربية.');});
+const languageDictionary = {
+  'عني':'About', 'الأعمال':'Work', 'الاعتمادات':'Credentials', 'تواصل':'Contact',
+  'الوضع':'Theme', 'صوت':'Sound', 'صوت: ON':'Sound: ON',
+  'أصمم ':'I design ', 'المستقبل':'the future', 'بلغة الذكاء.':'with intelligence.',
+  'استكشف أعمالي ↗':'Explore my work ↗', 'ابدأ محادثة':'Start a conversation',
+  'من أنا؟':'About me', 'مساحات العمل':'Workspaces', 'الاعتمادات والخبرة':'Credentials & experience',
+  'لنبنِ شيئاً':'Let’s build something', 'استثنائياً.':'exceptional.',
+  'معاينة السيرة الذاتية ↗':'Preview my CV ↗', 'معاينة ↗':'Preview ↗', 'قراءة الكتاب ↗':'Read the book ↗',
+  '▧ صور ':'▧ Images ', '◉ أفاتار وفيديو ':'◉ Avatar & video ', '✦ إعلانات ':'✦ Ads ',
+  '∿ صوتيات ':'∿ Audio ', '▤ عروض تقديمية ':'▤ Presentations ', '⌘ مواقع وألعاب ':'⌘ Sites & games ', '▥ كتب ':'▥ Books ',
+  'صورة المهندس تامر مستريحي':'Portrait of Tamer Mistareehi',
+  'الاسم':'Name', 'البريد الإلكتروني':'Email', 'الرسالة':'Message', 'إرسال الرسالة ↗':'Send message ↗',
+  'كيف أناديك؟':'What should I call you?', 'أخبرني عن فكرتك...':'Tell me about your idea...',
+  'التالي':'Next', 'السابق':'Previous', 'إغلاق المعاينة':'Close preview',
+  'الذكاء الاصطناعي - أدوات الابتكار والإبداع تامر مستريحي':'AI — Tools for Innovation & Creativity · Tamer Mistareehi',
+  'حروف الأبجدية لأحداثنا الاسلامية':'Alphabet Letters for Our Islamic Events',
+  'كتاب مصوّر عن حروف الأبجدية وأحداثنا الإسلامية.':'An illustrated book about alphabet letters and our Islamic events.',
+  'PRESENTATION':'PRESENTATION', 'IMAGE':'IMAGE', 'BOOK / PDF':'BOOK / PDF',
+  'Artificial Intelligence & Data':'Artificial Intelligence & Data',
+  'Generative AI Engineer / Designer':'Generative AI Engineer / Designer',
+  'بكالوريوس هندسة اتصالات':'B.Sc. in Telecommunications Engineering',
+  'جامعة مؤتة · كلية الهندسة':'Mutah University · Faculty of Engineering',
+  'Amman · Jordan':'Amman · Jordan',
+  'مهندس اتصالات ومصمم حلول ذكاء اصطناعي توليدي، أحوّل الأفكار المعقّدة إلى تجارب رقمية واضحة، مؤثرة، وقابلة للتوسع.':'Telecommunications engineer and generative AI solutions designer. I turn complex ideas into clear, impactful, scalable digital experiences.',
+  'أنا **تامر مستريحي**، مهندس اتصالات أعمل على تقاطع الهندسة، التصميم، والذكاء الاصطناعي التوليدي.':'I am **Tamer Mistareehi**, a telecommunications engineer working at the intersection of engineering, design, and generative AI.',
+  'أبني مساحات رقمية تفكر مثل الأنظمة الجيدة: منظمة، مرنة، وإنسانية. خلفيتي في الشبكات والأمن السيبراني والبرمجة تمنحني منظوراً عملياً، بينما شغفي بالتصميم يحوّل التقنية إلى أثر مفهوم.':'I build digital spaces that think like good systems: organized, flexible, and human. My background in networking, cybersecurity, and programming gives me a practical perspective, while my passion for design turns technology into meaningful impact.',
+  'استكشف أعمالي حسب النوع: من الصور والتصاميم إلى الإعلانات والصوت والعروض.':'Explore my work by type: from images and designs to ads, audio, and presentations.',
+  'لديك فكرة، تحدٍ، أو سؤال؟ أرسل رسالة مباشرة وسأعود إليك.':'Have an idea, challenge, or question? Send a direct message and I will get back to you.',
+  'سيتم إرسال رسالتك مباشرة إلى tamermistareehi@gmail.com.':'Your message will be sent directly to tamermistareehi@gmail.com.',
+  'استكشف أعمالي':'Explore my work', 'ابدأ محادثة':'Start a conversation',
+  'معاينة السيرة الذاتية':'Preview my CV', 'إرسال الرسالة':'Send message',
+  'من أنا':'About me', 'مساحات العمل':'Workspaces', 'الاعتمادات والخبرة':'Credentials & experience',
+  'صوتيات':'Audio', 'عروض تقديمية':'Presentations', 'مواقع وألعاب':'Sites & games', 'كتب':'Books',
+  'سنوات تعلّم وبناء':'years learning and building', 'شهادات تخصصية':'specialized certificates', 'عقل فضولي':'curious mind',
+  'أهلاً':'Welcome', 'الاسمالبريد الإلكتروني':'NameEmail', 'الرسالة':'Message',
+  'تدريب متخصص في الذكاء الاصطناعي، تحليل البيانات، وأمن المعلومات.':'Specialized training in AI, data analysis, and information security.',
+  'أصمم حلولاً تجمع بين التفكير الهندسي والخيال الإبداعي.':'I design solutions that combine engineering thinking with creative imagination.',
+  'رسالتك':'Your message', 'الذكاء الاصطناعي':'Artificial intelligence'
+};
+const originalArabic = new Map();
+function translatePage(toEnglish) {
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  let node;
+  while ((node = walker.nextNode())) {
+    if (node.parentElement?.closest('script,style,iframe')) continue;
+    nodes.push(node);
+  }
+  nodes.forEach(textNode => {
+    const value = textNode.nodeValue;
+    const trimmed = value.trim();
+    if (!trimmed) return;
+    if (!originalArabic.has(textNode)) originalArabic.set(textNode, value);
+    const arabic = originalArabic.get(textNode);
+    if (!toEnglish) { textNode.nodeValue = arabic; return; }
+    let translated = languageDictionary[arabic.trim()];
+    if (translated === undefined) {
+      translated = arabic;
+      Object.entries(languageDictionary).forEach(([ar, en]) => { translated = translated.split(ar).join(en); });
+    }
+    if (translated !== arabic) textNode.nodeValue = translated;
+  });
+  document.querySelectorAll('input, textarea').forEach(el => {
+    if (!el.dataset.arPlaceholder) el.dataset.arPlaceholder = el.placeholder;
+    if (toEnglish) {
+      el.placeholder = el.dataset.arPlaceholder === 'كيف أناديك؟' ? 'What should I call you?' : el.dataset.arPlaceholder === 'أخبرني عن فكرتك...' ? 'Tell me about your idea...' : el.placeholder;
+    } else el.placeholder = el.dataset.arPlaceholder;
+  });
+}
+document.getElementById('langToggle').addEventListener('click', e => {
+  const toEnglish = document.documentElement.lang === 'ar';
+  document.documentElement.lang = toEnglish ? 'en' : 'ar';
+  document.documentElement.dir = toEnglish ? 'ltr' : 'rtl';
+  e.target.textContent = toEnglish ? 'AR' : 'EN';
+  document.body.classList.toggle('english', toEnglish);
+  translatePage(toEnglish);
+});
 const contactForm=document.querySelector('.contact-form');const formStatus=contactForm?.querySelector('.form-status');contactForm?.addEventListener('submit',e=>{if(!contactForm.checkValidity()){e.preventDefault();contactForm.reportValidity();return}ping(700);if(formStatus)formStatus.textContent='جارٍ إرسال رسالتك…';contactForm.querySelector('button[type=submit]').disabled=true;});if(location.search.includes('sent=1')&&formStatus){formStatus.textContent='تم إرسال رسالتك بنجاح، شكراً لتواصلك.';history.replaceState({},document.title,location.pathname+'#contact');}
 const workTabs=document.querySelectorAll('.work-tab');const groups=document.querySelectorAll('.media-group');workTabs.forEach(tab=>tab.addEventListener('click',()=>{workTabs.forEach(t=>t.classList.remove('active'));tab.classList.add('active');groups.forEach(g=>g.style.display=g.dataset.group===tab.dataset.filter?'grid':'none');ping(520)}));
 (function initThree(){if(!window.THREE)return;const canvas=document.getElementById('three-bg'),scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,.1,1000);camera.position.z=8;const mobile=matchMedia('(max-width: 700px)').matches;const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:!mobile});renderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.25:1.75));renderer.setSize(innerWidth,innerHeight);const group=new THREE.Group();scene.add(group);const material=new THREE.PointsMaterial({color:0x57b994,size:.045,transparent:true,opacity:.75});const geo=new THREE.BufferGeometry(),count=mobile?260:700,positions=new Float32Array(count*3);for(let i=0;i<count*3;i+=3){positions[i]=(Math.random()-.5)*16;positions[i+1]=(Math.random()-.5)*10;positions[i+2]=(Math.random()-.5)*8}geo.setAttribute('position',new THREE.BufferAttribute(positions,3));group.add(new THREE.Points(geo,material));const torus=new THREE.Mesh(new THREE.TorusGeometry(3.7,.008,8,180),new THREE.MeshBasicMaterial({color:0x8bd9bd,transparent:true,opacity:.35}));torus.rotation.x=1.1;group.add(torus);const torus2=torus.clone();torus2.scale.set(.7,.7,.7);torus2.rotation.y=.8;torus2.material=torus.material.clone();torus2.material.color.set(0x9bcfe0);group.add(torus2);let mx=0,my=0;window.addEventListener('pointermove',e=>{mx=(e.clientX/innerWidth-.5)*.5;my=(e.clientY/innerHeight-.5)*.3});let pageVisible=true;document.addEventListener('visibilitychange',()=>pageVisible=document.visibilityState==='visible');function animate(){requestAnimationFrame(animate);if(!pageVisible)return;group.rotation.y+=(mx-group.rotation.y)*.012;group.rotation.x+=(my-group.rotation.x)*.012;torus.rotation.z+=.0018;torus2.rotation.z-=.001;renderer.render(scene,camera)}animate();addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)})})();
