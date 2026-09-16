@@ -41,7 +41,7 @@ groups.forEach((g,i)=>{g.hidden=i!==0});workTabs.forEach(tab=>tab.addEventListen
       el.title = title;
       el.setAttribute('allow', 'fullscreen');
       // Do not sandbox PDF viewers: browser and Drive PDF plugins need their own viewer context.
-      if (type !== 'pdf' && !url.includes('drive.google.com')) el.setAttribute('sandbox', 'allow-same-origin allow-scripts');
+      if (type !== 'pdf' && !url.includes('drive.google.com') && !url.includes('view.officeapps.live.com')) el.setAttribute('sandbox', 'allow-same-origin allow-scripts');
     }
     el.className = `preview-${type}`;
     el.addEventListener('contextmenu', e => e.preventDefault());
@@ -91,7 +91,7 @@ groups.forEach((g,i)=>{g.hidden=i!==0});workTabs.forEach(tab=>tab.addEventListen
       el.title = title;
       el.setAttribute('allow', 'fullscreen');
       // Do not sandbox PDF viewers: browser and Drive PDF plugins need their own viewer context.
-      if (type !== 'pdf' && !url.includes('drive.google.com')) el.setAttribute('sandbox', 'allow-same-origin allow-scripts');
+      if (type !== 'pdf' && !url.includes('drive.google.com') && !url.includes('view.officeapps.live.com')) el.setAttribute('sandbox', 'allow-same-origin allow-scripts');
     }
     el.className = `preview-${type}`;
     el.addEventListener('contextmenu', e => e.preventDefault());
